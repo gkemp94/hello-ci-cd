@@ -28,6 +28,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: testing-application
           environment_name: testing-application-env
-          version_label: 12345
+          version_label: ${{ git.sha }}
           region: us-east-1
           deployment_package: deploy.zip
