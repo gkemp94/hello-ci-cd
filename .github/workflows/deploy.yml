@@ -54,9 +54,6 @@ jobs:
 
       - name: Deploy Cloudformation
         run: |
-          aws cloudformation deploy \ 
-            --template-file ./.aws/cloudformation.yml \
-            --stack-name ${{ steps.configure.outputs.ServiceName }}-development \
-            --parameter-overrides Stage=development ServiceName=${{ steps.configure.outputs.ServiceName }} ImageURI=${{ steps.build.outputs.ImageURI }}
+          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ steps.configure.outputs.ServiceName }}-development --parameter-overrides Stage=development ServiceName=${{ steps.configure.outputs.ServiceName }} ImageURI=${{ steps.build.outputs.ImageURI }}
 
 
