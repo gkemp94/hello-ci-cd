@@ -15,14 +15,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
       - name: Configure Workflow
         id: configure
         run: |
           PACKAGE_NAME=$(cat package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
           echo "$PACKAGE_NAME"
           echo ::set-output name=service-name::$PACKAGE_NAME
-
-      - uses: actions/checkout@v2
         
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
