@@ -53,6 +53,6 @@ jobs:
       - name: Deploy Cloudformation
         run: | 
           echo ${{ steps.configure.outputs.service-name }}
-          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ job.deploy.steps.configure.outputs.service-name }}-development
+          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ steps.configure.outputs.service-name }}-development
 
 
