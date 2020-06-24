@@ -49,6 +49,8 @@ jobs:
         run: docker logout ${{ steps.login-ecr.outputs.registry }}
 
       - name: Deploy Cloudformation
-        run: aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ jobs.deploy.steps.configure.outputs.service-name }}-development
+        run: | 
+          echo ${{ jobs.deploy.steps.configure.outputs.service-name }}
+          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ jobs.deploy.steps.configure.outputs.service-name }}-development
 
 
