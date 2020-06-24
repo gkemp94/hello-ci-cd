@@ -1,15 +1,12 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 
-name: Build & Deploy
+name: Production
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - main
 
 jobs:
   main:
@@ -24,6 +21,7 @@ jobs:
           PACKAGE_NAME=$(cat package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
           echo "$PACKAGE_NAME"
           echo ::set-output name=ServiceName::$PACKAGE_NAME
+          echo ::set-output name=Stage::production
         
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -54,6 +52,6 @@ jobs:
 
       - name: Deploy Cloudformation
         run: |
-          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ steps.configure.outputs.ServiceName }}-development --parameter-overrides Stage=development ServiceName=${{ steps.configure.outputs.ServiceName }} ImageURI=${{ steps.build.outputs.ImageURI }} --capabilities CAPABILITY_NAMED_IAM
+          aws cloudformation deploy --template-file ./.aws/cloudformation.yml --stack-name ${{ steps.configure.outputs.ServiceName }}-${{ steps.configure.outputs.Stage}} --parameter-overrides Stage=${{ steps.configure.outputs.Stage}} ServiceName=${{ steps.configure.outputs.ServiceName }} ImageURI=${{ steps.build.outputs.ImageURI }} --capabilities CAPABILITY_NAMED_IAM
 
 
